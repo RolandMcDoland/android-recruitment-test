@@ -31,6 +31,7 @@
         app:srcCompat="@drawable/ic_logo_sd_text" />
 
     <include
+        android:id="@+id/throbber"
         layout="@layout/layout_progressbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
