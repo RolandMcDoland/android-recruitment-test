@@ -8,6 +8,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.splash_activity.*
 import java.net.HttpURLConnection
 import java.net.URL
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import dog.snow.androidrecruittest.repository.model.RawPhoto
 
 class SplashActivity : AppCompatActivity(R.layout.splash_activity) {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,9 +41,17 @@ class SplashActivity : AppCompatActivity(R.layout.splash_activity) {
             super.onPostExecute(result)
 
             // TODO process JSON
+            handleJSON(result)
 
             throbber.visibility = View.GONE
         }
+    }
+
+    private fun handleJSON(result: String?) {
+        val gson = Gson()
+        val arrayPhotosType = object : TypeToken<Array<RawPhoto>>() {}.type
+
+        var photos: Array<RawPhoto> = gson.fromJson(result, arrayPhotosType)
     }
 
     private fun showError(errorMessage: String?) {
