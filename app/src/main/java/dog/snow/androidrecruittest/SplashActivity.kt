@@ -1,5 +1,6 @@
 package dog.snow.androidrecruittest
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +27,7 @@ class SplashActivity : AppCompatActivity(R.layout.splash_activity) {
                 if (response.isSuccessful){
                     System.out.println(response.body())
                     throbber.visibility = View.GONE
+                    change(request)
                 } else {
                     showError(response.message())
                 }
@@ -34,6 +36,11 @@ class SplashActivity : AppCompatActivity(R.layout.splash_activity) {
                 showError(t.message)
             }
         })
+    }
+
+    private fun change(photos: JsonplaceholderEndpoints) {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
     private fun showError(errorMessage: String?) {
