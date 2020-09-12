@@ -13,7 +13,7 @@
         android:layout_height="@dimen/thumb_size"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
-        android:src="?attr/colorPrimary"
+        android:src="@drawable/ic_placeholder"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
