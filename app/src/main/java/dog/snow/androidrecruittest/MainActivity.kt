@@ -54,10 +54,13 @@ class MainActivity : AppCompatActivity(R.layout.main_activity){
             il.add(ListItem(it.id, it.title, it.title, it.thumbnailUrl))
         }
         itemList = il
+
         val buz: (ListItem, Int, View)->Unit = { l, i, v ->   println("another message: $i") }
+
         val la = ListAdapter(buz)
         la.submitList(il)
         listAdapter = la
+
         rv_items.adapter = la
 
         rv_items.visibility = View.VISIBLE
