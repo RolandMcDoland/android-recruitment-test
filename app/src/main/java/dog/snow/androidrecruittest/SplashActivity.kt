@@ -11,7 +11,6 @@ import dog.snow.androidrecruittest.network.ServiceBuilder
 import dog.snow.androidrecruittest.repository.model.RawAlbum
 import dog.snow.androidrecruittest.repository.model.RawPhoto
 import dog.snow.androidrecruittest.repository.model.RawUser
-import dog.snow.androidrecruittest.ui.model.ListItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -81,11 +80,8 @@ class SplashActivity : AppCompatActivity(R.layout.splash_activity) {
 
         call.enqueue(object : Callback<RawUser> {
             override fun onResponse(call: Call<RawUser>, response: Response<RawUser>) {
-                if (!response.isSuccessful) {
+                if (!response.isSuccessful)
                     showError(response.message())
-                } else {
-                    System.out.println(response.body())
-                }
             }
 
             override fun onFailure(call: Call<RawUser>, t: Throwable) {

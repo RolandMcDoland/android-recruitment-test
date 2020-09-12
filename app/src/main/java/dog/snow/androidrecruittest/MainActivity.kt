@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import dog.snow.androidrecruittest.network.JsonplaceholderEndpoints
 import dog.snow.androidrecruittest.network.ServiceBuilder
+import dog.snow.androidrecruittest.repository.model.RawAlbum
 import dog.snow.androidrecruittest.repository.model.RawPhoto
 import dog.snow.androidrecruittest.ui.adapter.ListAdapter
 import dog.snow.androidrecruittest.ui.model.ListItem
@@ -18,9 +19,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity(R.layout.main_activity){
-    private var itemList: List<ListItem>? = null
+    private var request: JsonplaceholderEndpoints? = null
+
+    private var itemList: MutableList<ListItem> = mutableListOf<ListItem>()
 
     private var listAdapter: ListAdapter? = null
+
+    private var albumMap: MutableMap<Int, RawAlbum> = mutableMapOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,13 +34,13 @@ class MainActivity : AppCompatActivity(R.layout.main_activity){
 
     override fun onStart() {
         super.onStart()
-        val request = ServiceBuilder.buildService(JsonplaceholderEndpoints::class.java, this)
-        val call = request.getPhotos(100)
+        request = ServiceBuilder.buildService(JsonplaceholderEndpoints::class.java, this)
+        val call = request!!.getPhotos(100)
 
         call.enqueue(object : Callback<List<RawPhoto>> {
             override fun onResponse(call: Call<List<RawPhoto>>, response: Response<List<RawPhoto>>) {
                 if (response.isSuccessful){
-                    createRecyclerView(response)
+                    downloadAlbumsAndCreateRecyclerView(response)
 
                     addSearchListener()
                 } else {
@@ -48,17 +53,46 @@ class MainActivity : AppCompatActivity(R.layout.main_activity){
         })
     }
 
-    private fun createRecyclerView(response: Response<List<RawPhoto>>) {
-        val il = mutableListOf<ListItem>()
-        response.body()!!.forEach {
-            il.add(ListItem(it.id, it.title, it.title, it.thumbnailUrl))
+    private fun downloadAlbumsAndCreateRecyclerView(orgResponse: Response<List<RawPhoto>>) {
+        val albumIds = mutableListOf<Int>()
+
+        orgResponse.body()!!.forEach {
+            if (!albumIds.contains(it.albumId))
+                albumIds.add(it.albumId)
         }
-        itemList = il
+
+        albumIds.forEach {
+            val call = request!!.getAlbum(it)
+
+            call.enqueue(object : Callback<RawAlbum> {
+                override fun onResponse(call: Call<RawAlbum>, response: Response<RawAlbum>) {
+                    if (response.isSuccessful) {
+                        albumMap[it] = response.body()!!
+
+                        if(albumIds.size == albumMap.size)
+                            createRecyclerView(orgResponse)
+                    }
+                    else
+                        System.out.println(response.message())
+                }
+
+                override fun onFailure(call: Call<RawAlbum>, t: Throwable) {
+                    System.out.println(t.message)
+                }
+            })
+        }
+    }
+
+    private fun createRecyclerView(response: Response<List<RawPhoto>>) {
+        itemList = mutableListOf<ListItem>()
+        response.body()!!.forEach {
+            itemList.add(ListItem(it.id, it.title, albumMap[it.albumId]!!.title, it.thumbnailUrl))
+        }
 
         val buz: (ListItem, Int, View)->Unit = { l, i, v ->   println("another message: $i") }
 
         val la = ListAdapter(buz)
-        la.submitList(il)
+        la.submitList(itemList)
         listAdapter = la
 
         rv_items.adapter = la
