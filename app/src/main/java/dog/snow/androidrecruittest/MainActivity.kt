@@ -120,6 +120,15 @@ class MainActivity : AppCompatActivity(R.layout.main_activity){
                 filteredList.add(it)
         }
 
-        listAdapter!!.submitList(filteredList)
+        if(filteredList.isEmpty()) {
+            rv_items.visibility = View.GONE
+            tv_empty.visibility = View.VISIBLE
+        }
+        else {
+            listAdapter!!.submitList(filteredList)
+            
+            rv_items.visibility = View.VISIBLE
+            tv_empty.visibility = View.GONE
+        }
     }
 }
