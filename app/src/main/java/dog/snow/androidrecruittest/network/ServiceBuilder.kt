@@ -19,7 +19,7 @@ object ServiceBuilder {
             .addInterceptor { chain ->
                 var request = chain.request()
                 request = if (hasNetwork(context)!!)
-                    request.newBuilder().header("Cache-Control", "public, max-age=" + 60 * 15).build()
+                    request.newBuilder().header("Cache-Control", "public, max-age=" + 60 * 60).build()
                 else
                     request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build()
                 chain.proceed(request)
