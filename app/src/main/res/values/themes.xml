@@ -7,8 +7,13 @@
         <item name="colorPrimary">@color/light_primary_color</item>
         <item name="colorPrimaryDark">@color/light_primary_dark_color</item>
         <item name="colorAccent">@color/light_accent_color</item>
+        <item name="colorSurface">@color/light_surface_color</item>
+        <item name="colorError">@color/light_error_color</item>
+        <item name="android:colorBackground">@color/light_background_color</item>
     </style>
 
-    <style name="AppTheme.SplashTheme" />
+    <style name="AppTheme.SplashTheme">
+        <item name="android:colorBackground">@color/light_splash_bg</item>
+    </style>
 
 </resources>

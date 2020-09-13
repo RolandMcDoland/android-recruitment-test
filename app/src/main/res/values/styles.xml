@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Widget.AppTheme.AppBar" parent="@style/Widget.Design.AppBarLayout" />
+    <style name="Widget.AppTheme.AppBar" parent="@style/Widget.Design.AppBarLayout">
+        <item name="android:background">?attr/colorPrimaryDark</item>
+    </style>
 
-    <style name="Widget.AppTheme.Banner" parent="@style/Widget.MaterialComponents.TextView" />
+    <style name="Widget.AppTheme.Banner" parent="@style/Widget.MaterialComponents.TextView">
+        <item name="android:background">?attr/colorAccent</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>
