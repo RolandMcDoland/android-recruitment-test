@@ -4,9 +4,9 @@
     <style name="Base.AppTheme" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
     <style name="AppTheme" parent="Base.AppTheme">
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
-        <item name="colorAccent">@color/color_accent</item>
+        <item name="colorPrimary">@color/light_primary_color</item>
+        <item name="colorPrimaryDark">@color/light_primary_dark_color</item>
+        <item name="colorAccent">@color/light_accent_color</item>
     </style>
 
     <style name="AppTheme.SplashTheme" />
