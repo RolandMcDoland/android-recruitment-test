@@ -10,11 +10,16 @@
     android:layout_marginEnd="@dimen/margin_normal"
     android:layout_marginBottom="@dimen/margin_normal"
     android:hint="@string/search_hint"
+    app:boxStrokeColor="@color/color_primary"
+    app:endIconTint="@color/color_primary"
+    app:hintTextColor="@color/color_primary"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+    app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+    app:startIconTint="@color/color_primary">
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/et_search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textCursorDrawable="@null" />
 </com.google.android.material.textfield.TextInputLayout>

@@ -165,8 +165,7 @@ class ListFragment : Fragment(R.layout.list_fragment) {
         }
 
         if(filteredList.isEmpty()) {
-            val noItemsText = "No items to show for filter: $s"
-            tv_empty.text = noItemsText
+            tv_empty.text = getString(R.string.empty_filter_list, s)
             rv_items.visibility = View.GONE
             tv_empty.visibility = View.VISIBLE
         }
