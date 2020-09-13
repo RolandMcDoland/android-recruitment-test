@@ -11,19 +11,31 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ServiceBuilder {
     fun<T> buildService(service: Class<T>, context: Context): T{
-        val cacheSize = (5 * 1024 * 1024).toLong()
+        val cacheSize = (10 * 1024 * 1024).toLong()
         val myCache = Cache(context.cacheDir, cacheSize)
 
         val client = OkHttpClient.Builder()
-            .cache(myCache)
             .addInterceptor { chain ->
                 var request = chain.request()
-                request = if (hasNetwork(context)!!)
-                    request.newBuilder().header("Cache-Control", "public, max-age=" + 60 * 60).build()
-                else
-                    request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build()
+                if (!hasNetwork(context)!!) {
+                    val maxStale = 60 * 10
+                    request = request.newBuilder()
+                        .header("Cache-Control", "public, only-if-cached, max-stale=$maxStale")
+                        .removeHeader("Pragma")
+                        .build()
+                }
                 chain.proceed(request)
             }
+            .addNetworkInterceptor { chain ->
+                val response = chain.proceed(chain.request())
+                val maxAge = 60 * 5
+
+                response.newBuilder()
+                    .header("Cache-Control", "public, max-age=$maxAge")
+                    .removeHeader("Pragma")
+                    .build()
+            }
+            .cache(myCache)
             .build()
 
         val retrofit = Retrofit.Builder()
