@@ -25,6 +25,6 @@ class DetailsFragment : Fragment(R.layout.details_fragment) {
         tv_username.text = detail!!.username
         tv_email.text = detail!!.email
         tv_phone.text = detail!!.phone
-        Picasso.get().load(detail!!.url).into(iv_photo)
+        Picasso.get().load(detail!!.url).placeholder(R.drawable.ic_placeholder).into(iv_photo)
     }
 }

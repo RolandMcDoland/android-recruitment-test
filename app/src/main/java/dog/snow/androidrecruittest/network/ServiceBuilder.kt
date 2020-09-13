@@ -21,9 +21,14 @@ object ServiceBuilder {
                     val maxStale = 60 * 10
                     request = request.newBuilder()
                         .header("Cache-Control", "public, only-if-cached, max-stale=$maxStale")
+                        .header("Age", "0")
                         .removeHeader("Pragma")
                         .build()
                 }
+                else
+                    request = request.newBuilder()
+                        .header("User-agent", "Cool-app")
+                        .build()
                 chain.proceed(request)
             }
             .addNetworkInterceptor { chain ->
@@ -32,6 +37,7 @@ object ServiceBuilder {
 
                 response.newBuilder()
                     .header("Cache-Control", "public, max-age=$maxAge")
+                    .header("Age", "0")
                     .removeHeader("Pragma")
                     .build()
             }

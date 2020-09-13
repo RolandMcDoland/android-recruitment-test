@@ -22,10 +22,7 @@ class ListAdapter(private val onClick: (item: ListItem, position: Int, view: Vie
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(getItem(position))
 
-    class ViewHolder(
-        itemView: View,
-        private val onClick: (item: ListItem, position: Int, view: View) -> Unit
-    ) :
+    class ViewHolder(itemView: View, private val onClick: (item: ListItem, position: Int, view: View) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
         fun bind(item: ListItem) = with(itemView) {
             val ivThumb: ImageView = findViewById(R.id.iv_thumb)
@@ -33,7 +30,7 @@ class ListAdapter(private val onClick: (item: ListItem, position: Int, view: Vie
             val tvAlbumTitle: TextView = findViewById(R.id.tv_album_title)
             tvTitle.text = item.title
             tvAlbumTitle.text = item.albumTitle
-            Picasso.get().load(item.thumbnailUrl).into(ivThumb)
+            Picasso.get().load(item.thumbnailUrl).placeholder(R.drawable.ic_placeholder).into(ivThumb)
             setOnClickListener { onClick(item, adapterPosition, this) }
         }
     }
